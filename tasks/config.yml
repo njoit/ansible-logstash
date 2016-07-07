@@ -1,0 +1,14 @@
+---
+- name: Create /var/log/logstash
+  file: path=/var/log/logstash state=directory recurse=yes mode=0755 group=root owner=root
+  
+- name: Create /var/run/logstash
+  file: path=/var/run/logstash state=directory recurse=yes mode=0755 group=root owner=root
+
+- name: Configure Logstash logstash-talend.conf
+  sudo: yes
+  template:
+    src: logstash-talend.conf.j2
+    dest: "{{ logserver_home }}/logstash-{{ logstash_version }}/{{ logstash_conf }}"
+  notify:
+    - start logstash
