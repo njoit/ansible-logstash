@@ -1,0 +1,16 @@
+---
+# handlers file for ansible-logstash
+
+- name: restart logstash
+  sudo: yes
+  service:
+    name: logstash
+    state: restarted
+    enabled: yes
+
+- name: start logstash
+  sudo: yes
+  service:
+    name: logstash
+    state: started
+    enabled: yes
