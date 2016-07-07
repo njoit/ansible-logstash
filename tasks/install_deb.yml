@@ -1,0 +1,13 @@
+---
+- name: add user "logstash"
+  user: name={{ logstash_user }} shell=/bin/false group=root createhome=no
+  sudo: True
+
+- name: make sure logserver home exists
+  file: path={{ logserver_home }} state=directory mode=0755
+
+- name: Download release
+  get_url: url={{download_url}} dest={{ logserver_home }} force=no
+
+- name: Extract logstash archive to /opt/logserver
+  unarchive: src="{{ logserver_home }}/logstash-{{logstash_version}}.tar.gz" dest="{{ logserver_home }}" copy=no creates="{{ logserver_home }}/logstash-{{logstash_version}}"
