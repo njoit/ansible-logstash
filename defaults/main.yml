@@ -1,0 +1,10 @@
+---
+# var file for ansible-logstash
+download_url: 'https://download.elastic.co/logstash/logstash/logstash-{{logstash_version}}.tar.gz'
+logstash_version: 2.3.3
+logstash_host: "{{host}}"
+logstash_port: 9200
+logstash_conf: "logstash-talend.conf"
+logstash_user: "logstash"
+logserver_home: /opt/logserver
+log4j_port: 8050
