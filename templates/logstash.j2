@@ -1,0 +1,72 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          logstash
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts logstash
+# Description:       Starts logstash using start-stop-daemon
+### END INIT INFO
+
+# {{ ansible_managed }}
+
+LS_HOME={{ logserver_home }}/logstash-{{ logstash_version }}
+LS_MIN_MEM=256m
+LS_MAX_MEM=2g
+DAEMON=$LS_HOME/bin/logstash
+NAME=logstash
+DESC=logstash
+PID_FILE=/var/run/$NAME/$NAME.pid
+LOG=/var/log/$NAME/logstash-{{ logstash_version }}.log
+CONFIG_FILE=$LS_HOME/{{ logstash_conf }}
+DAEMON_OPTS="agent -f $CONFIG_FILE -l $LOG"
+
+
+test -x $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+  start)
+    echo -n "Starting $DESC: "
+    if start-stop-daemon --start --pidfile $PID_FILE --background --make-pidfile --startas /bin/bash -- -c "exec $DAEMON $DAEMON_OPTS > /var/log/logstash/logstash_stdout.log 2>&1"
+    
+    then
+        echo "started."
+    else
+        echo "failed."
+    fi
+    ;;
+  stop)
+    echo -n "Stopping $DESC: "
+    if start-stop-daemon --stop --pidfile $PID_FILE
+    then
+    	rm -f $PID_FILE
+        echo "stopped."
+    else
+        echo "failed."
+    fi
+    ;;
+  status)
+    echo -n "Stopping $DESC: "
+    if start-stop-daemon --status --pidfile $PID_FILE
+    then
+        echo echo "logstash is running with pid: $PID_FILE"
+    else
+        echo "logstash is not running."
+    fi
+    ;;
+  restart|force-reload)
+    ${0} stop
+    sleep 0.5
+    ${0} start
+    ;;
+  *)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|status|restart|force-reload}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0
