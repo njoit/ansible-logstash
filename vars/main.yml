@@ -1,0 +1,27 @@
+---
+# var file for ansible-logstash
+download_url: 'https://download.elastic.co/logstash/logstash/logstash-{{logstash_version}}.tar.gz'
+logstash_version: 2.3.3
+logstash_host: "{{host}}"
+logstash_port: 9200
+logstash_conf: "logstash-talend.conf"
+logstash_user: "logstash"
+logstash:
+  deb:
+    repo_elasticsearch: 'deb https://packages.elastic.co/elasticsearch/2.x/debian stable main' # elasticsearch repo
+    dependencies: # Tomcat dependencies
+      - 'oracle-java8-installer'
+      - 'git'
+      - 'curl'
+      - 'zip'
+      - 'unzip'
+  redhat:
+    dependencies:
+      - 'java'
+      - 'git'
+      - 'curl'
+      
+logserver_home: /opt/logserver
+log4j_port: 8050
+elasticsearch_host: "{{host}}"
+elasticsearch_port: 9201
