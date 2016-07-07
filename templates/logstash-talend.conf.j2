@@ -1,0 +1,15 @@
+input {
+ log4j {
+     mode => "server"
+     host  => "{{ logstash_host }}"
+     port => {{ log4j_port }}
+    type => "TAC"
+ }
+}
+
+output {
+  elasticsearch { hosts => ["{{elasticsearch_host}}:{{elasticsearch_port}}"] }
+#  stdout { codec => rubydebug }
+}
+
+# {{ ansible_managed }}
