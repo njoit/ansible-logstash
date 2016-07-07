@@ -1,0 +1,9 @@
+---
+
+- name: Install Logstash as a service
+  template:
+    src: logstash.j2
+    dest: /etc/init.d/logstash
+    owner: root
+    group: root
+    mode: 0755
