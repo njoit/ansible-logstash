@@ -49,10 +49,10 @@ case "$1" in
     fi
     ;;
   status)
-    echo -n "Stopping $DESC: "
+    echo -n "Status $DESC: "
     if start-stop-daemon --status --pidfile $PID_FILE
     then
-        echo echo "logstash is running with pid: $PID_FILE"
+        echo  "logstash is running with pid: $PID_FILE"
     else
         echo "logstash is not running."
     fi
